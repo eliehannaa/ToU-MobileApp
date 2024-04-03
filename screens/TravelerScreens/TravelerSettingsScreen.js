@@ -150,7 +150,7 @@ const SettingsScreen = ({ navigation }) => {
           }
         );
         setIsLoading(false);
-        await AsyncStorage.setItem("AccessToken", res.data.token);
+        await AsyncStorage.setItem("AccessToken", token);
       } catch (err) {
         setIsLoading(false);
         if (err.status == 401) {
@@ -160,7 +160,10 @@ const SettingsScreen = ({ navigation }) => {
             routes: [{ name: "LoginScreen" }],
           });
         } else {
-          await AsyncStorage.setItem("AccessToken", err.response.data.token);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "LoginScreen" }],
+          });
         }
       }
 

@@ -49,11 +49,19 @@ const TravelerMainScreen = ({ navigation }) => {
       await AsyncStorage.setItem("AccessToken", res.data.token);
       console.log(res.data);
       if (res.data.hasTicket == true) {
-        setFlightDate(res.data.ticket.departure);
-        setDeparture_flight(res.data.ticket.departure_flight);
-        setArrival_flight(res.data.ticket.return_flight);
-        setReturnDate(res.data.ticket.return);
-        setNameonTicket(res.data.ticket.ticket_name);
+        const ticket = {
+          pdfFile: "ticket.pdf",
+          departure: "16Nov 07:15",
+          return: "22Nov 12:00",
+          departure_flight: "ME0217",
+          return_flight: "ME0218",
+          ticket_name: "Jane Doe",
+        };
+        setFlightDate(ticket.departure);
+        setDeparture_flight(ticket.departure_flight);
+        setArrival_flight(ticket.return_flight);
+        setReturnDate(ticket.return);
+        setNameonTicket(ticket.ticket_name);
       }
       setHasTicket(res.data.hasTicket);
     } catch (err) {
@@ -101,14 +109,30 @@ const TravelerMainScreen = ({ navigation }) => {
         name: ticketName,
         data: ticketData,
       });
-      const res = await axios.post("/traveler/home/uploadTicket", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+      const body = {
+        file: {
+          uri: ticketUri,
+          type: ticketType,
+          name: ticketName,
+          data: ticketData,
         },
-      });
-      await AsyncStorage.setItem("AccessToken", res.data.token);
+      };
+      console.log("before upload");
+      const res = await axios
+        .post("/traveler/home/uploadTicket", JSON.stringify(body), {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log("uploaded tkt");
+        });
+      console.log("uploaded tkt");
+      // await AsyncStorage.setItem("AccessToken", res.data.token);
+      console.log("set token");
       const token1 = await AsyncStorage.getItem("AccessToken");
+      console.log("get token");
       const res1 = await axios.post(
         "/providePickup",
         JSON.stringify({ pickupLocation }),
@@ -120,8 +144,12 @@ const TravelerMainScreen = ({ navigation }) => {
         }
       );
       setIsLoading(false);
+      console.log("uploaded");
+      setHasTicket(true);
+      handleTravelerView();
+      return;
       console.log(res.data); //for you to check what the server is responding with
-      await AsyncStorage.setItem("AccessToken", res1.data.token);
+      // await AsyncStorage.setItem("AccessToken", res1.data.token);
 
       //send user to corresponding page
       //add what happens when uploaded successfully
@@ -135,7 +163,7 @@ const TravelerMainScreen = ({ navigation }) => {
         });
         await AsyncStorage.setItem("AccessToken", res.data.token);
         console.log(res.data);
-        if (res.data.hasTicket == true) {
+        if (hasTicket == true) {
           setFlightDate(res.data.ticket.departure);
           setDeparture_flight(res.data.ticket.departure_flight);
           setArrival_flight(res.data.ticket.return_flight);
@@ -229,7 +257,9 @@ const TravelerMainScreen = ({ navigation }) => {
   const handleCancelTicket = async () => {
     // BACKEND CODE TO CANCEL TICKET IN DATABASE
     try {
+      console.log("cancel ticket clicked");
       const token = await AsyncStorage.getItem("AccessToken");
+      console.log("got token");
       const res = await axios.post(
         "/cancelflight",
         {},
@@ -240,7 +270,11 @@ const TravelerMainScreen = ({ navigation }) => {
           },
         }
       );
+      console.log("post done");
       await AsyncStorage.setItem("AccessToken", res.data.token);
+      console.log("AsyncStorage done");
+      setHasTicket(false);
+      handleTravelerView();
     } catch (err) {
       if (err.status == 401) {
         await AsyncStorage.removeItem("AccessToken");

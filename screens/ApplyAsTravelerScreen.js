@@ -160,6 +160,7 @@ const ApplyAsTravelerScreen = () => {
       //   headers: { 'Content-Type': 'application/json' }
       // }
       // );
+      console.log("before post");
       const res = await axios.post("/travelersignup", JSON.stringify(body), {
         headers: {
           "Content-Type": "application/json",
