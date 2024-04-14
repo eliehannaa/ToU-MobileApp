@@ -170,7 +170,7 @@ const ApplyAsTravelerScreen = () => {
 
       console.log("after post2");
 
-      console.log(res.data); //for you to check what the server is responding with
+      console.log(res.data); //to check what the server is responding with
 
       //send user to corresponding page
 

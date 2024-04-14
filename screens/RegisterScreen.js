@@ -58,7 +58,6 @@ const RegisterScreen = () => {
     }
     setIsLoading(true);
     //If the code reached here, it means that the form is valid
-    //Backend developer, your code goes here :)
     try {
       console.log("We are here 2");
       const res = await axios.post(
@@ -78,7 +77,7 @@ const RegisterScreen = () => {
         }
       );
       setIsLoading(false);
-      console.log(res.data); //for you to check what the server is responding with
+      console.log(res.data); //to check what the server is responding with
 
       //send user to corresponding page
 

@@ -42,8 +42,6 @@ const PasteLinkScreen = ({ navigation }) => {
     setIsLoading(true);
 
     //BACKEND CODE FOR CHECKING PRODUCT
-    // Implement logic for sending the link to the backend, and then redirecting to the product page with a json object containing the product details
-    // For now, we will just redirect to the product page for testing purposes
 
     try {
       console.log("We are here 4");
@@ -55,7 +53,7 @@ const PasteLinkScreen = ({ navigation }) => {
         }
       );
       setIsLoading(false);
-      console.log(res.data); //for you to check what the server is responding with
+      console.log(res.data); //to check what the server is responding with
 
       //send user to corresponding page
       if (res.status == 200) {

@@ -24,7 +24,6 @@ const SettingsScreen = ({ navigation }) => {
   const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Dummy data, replace with data from the backend
   const handleProfile = async () => {
     try {
       const token = await AsyncStorage.getItem("AccessToken");

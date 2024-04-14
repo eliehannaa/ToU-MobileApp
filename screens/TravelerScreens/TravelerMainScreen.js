@@ -148,7 +148,7 @@ const TravelerMainScreen = ({ navigation }) => {
       setHasTicket(true);
       handleTravelerView();
       return;
-      console.log(res.data); //for you to check what the server is responding with
+      console.log(res.data); //to check what the server is responding with
       // await AsyncStorage.setItem("AccessToken", res1.data.token);
 
       //send user to corresponding page
